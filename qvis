@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+import PyQt5
+from matplotlib import pyplot
+import numpy
+import sys
+import math
+
+col = 0
+data = []
+data3 = {}
+for ln, line in enumerate(sys.stdin):
+	line_sp = line.split()
+	col = len(line_sp)
+	if col <= 2:
+		data_line = [float(x) for x in line.split()]
+	elif col == 3:
+		data_line = [float(line_sp[0]), float(line_sp[1])]
+	else:
+		print("Cannot proc col > 3");
+		sys.exit(2)
+	if col == 0:
+		col = len(line_sp)
+	elif col != len(line_sp):
+		print(col, "vs", len(line_sp), "mismatch in line", ln)
+		print("content:", line)
+		sys.exit(1)
+	if col <= 2:
+		data.append(data_line)
+	else:
+		data3.setdefault(line_sp[2], []).append(data_line)
+if col <= 2:
+	data = numpy.array(data).transpose()
+else:
+	data3 = {k: numpy.array(v).transpose() for k, v in data3.items()}
+
+if col == 1: # histogram
+	pyplot.hist(
+		data,
+		bins = int(math.sqrt(ln)) * 10,
+		histtype = 'step',
+		cumulative = True,
+	)
+elif col == 2: # xy plot
+	pyplot.plot(data[0], data[1])
+elif col == 3: # x,y,tag
+	for k, v in data3.items():
+		pyplot.plot(v[0], v[1], label = k)
+
+pyplot.show()
