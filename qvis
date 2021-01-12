@@ -41,9 +41,10 @@ if col == 1: # histogram
 		cumulative = True,
 	)
 elif col == 2: # xy plot
-	pyplot.plot(data[0], data[1])
+	pyplot.plot(*zip(*sorted(zip(data[0], data[1]))))
 elif col == 3: # x,y,tag
 	for k, v in data3.items():
-		pyplot.plot(v[0], v[1], label = k)
+		pyplot.plot(*zip(*sorted(zip(v[0], v[1]))), label = k)
+	pyplot.legend()
 
 pyplot.show()
