@@ -34,12 +34,9 @@ else:
 	data3 = {k: numpy.array(v).transpose() for k, v in data3.items()}
 
 if col == 1: # histogram
-	pyplot.hist(
-		data,
-		bins = int(math.sqrt(ln)) * 10,
-		histtype = 'step',
-		cumulative = True,
-	)
+	data = data.flatten()
+	cum = numpy.arange(len(data))
+	pyplot.plot(data, cum)
 elif col == 2: # xy plot
 	pyplot.plot(*zip(*sorted(zip(data[0], data[1]))))
 elif col == 3: # x,y,tag
