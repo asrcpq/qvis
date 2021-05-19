@@ -5,6 +5,15 @@ import numpy
 import sys
 import math
 
+args = iter(sys.argv)
+while True:
+	try:
+		arg = next(args)
+		if arg == "log":
+			pyplot.yscale("log")
+	except:
+		break
+
 col = 0
 data = []
 data3 = {}
